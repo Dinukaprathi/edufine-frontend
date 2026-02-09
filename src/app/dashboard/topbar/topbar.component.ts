@@ -1,12 +1,13 @@
-import { Component, Output, EventEmitter, inject, HostListener, ElementRef, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, inject, HostListener, ElementRef, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faBars, faBell, faSearch, faSignOutAlt,
   faCircleInfo, faCheckDouble, faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
-import { NoticeService, NoticeId } from '../../core/services/notice.service';
+import { NoticeService } from '../../core/services/notice.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -20,6 +21,8 @@ export class TopbarComponent implements OnInit {
 
   private el = inject(ElementRef);
   private noticeService = inject(NoticeService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   faBars = faBars;
   faBell = faBell;
@@ -33,15 +36,18 @@ export class TopbarComponent implements OnInit {
   userRole = 'SUPER_ADMIN';
 
   notices = this.noticeService.notices;
-  unreadCount = this.noticeService.unreadCount;
+  activeNotices = computed(() => this.notices().filter(notice => notice.active));
+  activeUnreadCount = computed(() => this.activeNotices().filter(notice => !notice.read).length);
 
   showNotifications = false;
 
   ngOnInit(): void {
     this.noticeService.loadActive();
+    this.userName = this.authService.getUsername() || 'User';
+    this.userRole = this.authService.getRole() || 'STAFF';
   }
 
-  noticeKey(id: NoticeId): string {
+  noticeKey(id: string): string {
     return this.noticeService.noticeKey(id);
   }
 
@@ -59,6 +65,11 @@ export class TopbarComponent implements OnInit {
 
   onMenuToggle(): void {
     this.menuToggle.emit();
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login'], { replaceUrl: true });
   }
 
   @HostListener('document:click', ['$event'])

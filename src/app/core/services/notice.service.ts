@@ -4,13 +4,8 @@ import { Observable, tap, catchError, of } from 'rxjs';
 
 /* ── DTOs matching the backend ── */
 
-export interface NoticeId {
-  timestamp: number;
-  date: string;
-}
-
 export interface NoticeResponse {
-  id: NoticeId;
+  id: string;
   title: string;
   content: string;
   active: boolean;
@@ -21,6 +16,10 @@ export interface NoticeResponse {
 export interface NoticeRequest {
   title: string;
   content: string;
+}
+
+export interface NoticeStatusRequest {
+  active: boolean;
 }
 
 /* Local-only wrapper – adds client-side "read" tracking */
@@ -52,8 +51,8 @@ export class NoticeService {
   );
 
   /** Unique string key for a notice (uses timestamp from ObjectId) */
-  noticeKey(id: NoticeId): string {
-    return String(id.timestamp);
+  noticeKey(id: string): string {
+    return id;
   }
 
   /* ── Fetchers ── */
@@ -111,13 +110,15 @@ export class NoticeService {
   }
 
   activate(id: string): Observable<void> {
-    return this.http.post<void>(`${API}/${id}/activate`, null).pipe(
+    const payload: NoticeStatusRequest = { active: true };
+    return this.http.patch<void>(`${API}/${id}/status`, payload).pipe(
       tap(() => this.loadAll())
     );
   }
 
   deactivate(id: string): Observable<void> {
-    return this.http.post<void>(`${API}/${id}/deactivate`, null).pipe(
+    const payload: NoticeStatusRequest = { active: false };
+    return this.http.patch<void>(`${API}/${id}/status`, payload).pipe(
       tap(() => this.loadAll())
     );
   }

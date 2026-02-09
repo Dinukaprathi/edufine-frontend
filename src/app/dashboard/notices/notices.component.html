@@ -127,8 +127,11 @@
     </div>
 
     <div class="notice-actions">
-      <button class="action-btn toggle-btn" (click)="toggleActive(notice)" [title]="notice.active ? 'Deactivate' : 'Activate'">
-        <fa-icon [icon]="notice.active ? faToggleOn : faToggleOff"></fa-icon>
+      <button class="notice-toggle" (click)="toggleActive(notice)" [attr.aria-pressed]="notice.active">
+        <span class="notice-toggle-track" [class.on]="notice.active">
+          <span class="notice-toggle-thumb"></span>
+        </span>
+        <span class="notice-toggle-label">{{ notice.active ? 'Active' : 'Inactive' }}</span>
       </button>
       <button class="action-btn delete-btn" (click)="deleteNotice(notice)" title="Delete">
         <fa-icon [icon]="faTrash"></fa-icon>

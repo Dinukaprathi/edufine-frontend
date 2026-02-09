@@ -58,7 +58,9 @@
           <span class="form-link">Forgot password?</span>
         </div>
 
-        <button class="btn-login" type="submit">Sign in</button>
+        <button class="btn-login" type="submit" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Signing in...' : 'Sign in' }}
+        </button>
 
         <p class="form-error" *ngIf="formError">{{ formError }}</p>
       </form>

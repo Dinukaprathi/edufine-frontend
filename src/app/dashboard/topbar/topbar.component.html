@@ -17,14 +17,14 @@
     <div class="notification-wrapper">
       <button class="topbar-icon-btn" title="Notifications" (click)="toggleNotifications()">
         <fa-icon [icon]="faBell"></fa-icon>
-        <span class="notification-badge" *ngIf="unreadCount() > 0">{{ unreadCount() }}</span>
+        <span class="notification-badge" *ngIf="activeUnreadCount() > 0">{{ activeUnreadCount() }}</span>
       </button>
 
       <!-- Notification dropdown -->
       <div class="notification-dropdown" *ngIf="showNotifications">
         <div class="dropdown-header">
           <h4>Notifications</h4>
-          <button class="mark-all-btn" *ngIf="unreadCount() > 0" (click)="markAllAsRead()">
+          <button class="mark-all-btn" *ngIf="activeUnreadCount() > 0" (click)="markAllAsRead()">
             <fa-icon [icon]="faCheckDouble"></fa-icon> Mark all read
           </button>
         </div>
@@ -32,7 +32,7 @@
         <div class="dropdown-body">
           <div
             class="dropdown-item"
-            *ngFor="let notice of notices() | slice:0:5"
+            *ngFor="let notice of activeNotices() | slice:0:5"
             [class.unread]="!notice.read"
             (click)="markAsRead(noticeKey(notice.id))"
           >
@@ -46,7 +46,7 @@
             </div>
           </div>
 
-          <div class="dropdown-empty" *ngIf="notices().length === 0">
+          <div class="dropdown-empty" *ngIf="activeNotices().length === 0">
             No notifications
           </div>
         </div>
@@ -56,6 +56,10 @@
         </a>
       </div>
     </div>
+
+    <button class="topbar-icon-btn" title="Sign out" (click)="logout()">
+      <fa-icon [icon]="faSignOutAlt"></fa-icon>
+    </button>
 
     <div class="user-menu">
       <div class="user-avatar">{{ userName.charAt(0) }}</div>
