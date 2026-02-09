@@ -1,0 +1,143 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title"><fa-icon [icon]="faBullhorn"></fa-icon> Notices</h1>
+    <p class="page-sub">Manage and publish notices for students, staff, and lecturers</p>
+  </div>
+  <button class="btn-primary" (click)="toggleCreateForm()">
+    <fa-icon [icon]="faPlus"></fa-icon>
+    {{ showCreateForm ? 'Cancel' : 'New Notice' }}
+  </button>
+</div>
+
+<!-- Loading -->
+<div class="loading-bar" *ngIf="loading()">
+  <fa-icon [icon]="faSpinner" class="spin"></fa-icon> Loading notices…
+</div>
+
+<!-- Create Form -->
+<div class="create-card" *ngIf="showCreateForm">
+  <h3 class="form-heading">Create Notice</h3>
+
+  <div class="form-body">
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input
+        class="form-input"
+        type="text"
+        placeholder="Enter notice title…"
+        [(ngModel)]="newNotice.title"
+        maxlength="200"
+        [class.invalid]="submitted && !newNotice.title.trim()"
+      />
+      <div class="form-row">
+        <span class="form-hint" *ngIf="submitted && !newNotice.title.trim()">Title is required</span>
+        <span class="char-count" [class.near-limit]="newNotice.title.length > 180">{{ newNotice.title.length }}/200</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Content</label>
+      <textarea
+        class="form-input form-textarea"
+        rows="5"
+        placeholder="Write the notice content…"
+        [(ngModel)]="newNotice.content"
+        maxlength="5000"
+        [class.invalid]="submitted && !newNotice.content.trim()"
+      ></textarea>
+      <div class="form-row">
+        <span class="form-hint" *ngIf="submitted && !newNotice.content.trim()">Content is required</span>
+        <span class="char-count" [class.near-limit]="newNotice.content.length > 4800">{{ newNotice.content.length }}/5000</span>
+      </div>
+    </div>
+
+    <!-- Metadata row -->
+    <div class="form-meta-row">
+      <!-- Status -->
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <div class="toggle-switch" (click)="formActive = !formActive">
+          <div class="toggle-track" [class.on]="formActive">
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="toggle-label" [class.active]="formActive">{{ formActive ? 'Active' : 'Inactive' }}</span>
+        </div>
+      </div>
+
+      <!-- Visible to roles -->
+      <div class="form-group">
+        <label class="form-label">Visible To</label>
+        <div class="roles-select">
+          <label class="role-chip" *ngFor="let role of allRoles">
+            <input
+              type="checkbox"
+              [checked]="selectedRoles.includes(role.value)"
+              (change)="toggleRole(role.value)"
+            />
+            <span class="role-chip-label" [class.selected]="selectedRoles.includes(role.value)">{{ role.label }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Created by -->
+      <div class="form-group">
+        <label class="form-label">Created By</label>
+        <div class="created-by-display">
+          <div class="created-by-avatar">{{ userName.charAt(0) }}</div>
+          <div class="created-by-info">
+            <span class="created-by-name">{{ userName }}</span>
+            <span class="created-by-role">{{ userRole }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn-secondary" (click)="toggleCreateForm()">Cancel</button>
+    <button class="btn-primary" (click)="createNotice()" [disabled]="submitting">
+      {{ submitting ? 'Publishing…' : 'Publish Notice' }}
+    </button>
+  </div>
+</div>
+
+<!-- Notices list -->
+<div class="notices-list">
+  <div
+    class="notice-card"
+    *ngFor="let notice of notices()"
+    [class.unread]="!notice.read"
+    [class.inactive]="!notice.active"
+  >
+    <div class="notice-icon icon-info">
+      <fa-icon [icon]="faCircleInfo"></fa-icon>
+    </div>
+
+    <div class="notice-body">
+      <div class="notice-header">
+        <h3 class="notice-title">{{ notice.title }}</h3>
+        <div class="notice-meta">
+          <span class="notice-status-badge" [class.active]="notice.active">{{ notice.active ? 'Active' : 'Inactive' }}</span>
+        </div>
+      </div>
+      <p class="notice-message">{{ notice.content }}</p>
+      <div class="notice-footer">
+        <span class="notice-date">{{ notice.createdAt | date:'medium' }}</span>
+      </div>
+    </div>
+
+    <div class="notice-actions">
+      <button class="action-btn toggle-btn" (click)="toggleActive(notice)" [title]="notice.active ? 'Deactivate' : 'Activate'">
+        <fa-icon [icon]="notice.active ? faToggleOn : faToggleOff"></fa-icon>
+      </button>
+      <button class="action-btn delete-btn" (click)="deleteNotice(notice)" title="Delete">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="notices().length === 0 && !loading()">
+    <fa-icon [icon]="faBullhorn" class="empty-icon"></fa-icon>
+    <p>No notices yet. Click <strong>New Notice</strong> to create one.</p>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Students</h1>
+      <p class="page-subtitle">View and manage student records.</p>
+    </div>
+    <button class="btn-primary">+ Add Student</button>
+  </div>
+
+  <div class="table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Student ID</th>
+          <th>Course</th>
+          <th>Year</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of students">
+          <td class="cell-primary">{{ s.name }}</td>
+          <td>{{ s.studentId }}</td>
+          <td>{{ s.course }}</td>
+          <td>{{ s.year }}</td>
+          <td>
+            <span class="status-badge" [class.active]="s.status === 'active'" [class.inactive]="s.status === 'inactive'">
+              {{ s.status }}
+            </span>
+          </td>
+          <td>
+            <button class="action-btn">View</button>
+            <button class="action-btn">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

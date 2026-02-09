@@ -1,0 +1,57 @@
+<div class="overview">
+  <!-- page header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Welcome back, Super Admin. Here's your institution overview.</p>
+    </div>
+  </div>
+
+  <!-- stat cards -->
+  <div class="stat-grid">
+    <div class="stat-card" *ngFor="let stat of stats" [attr.data-color]="stat.color">
+      <div class="stat-icon"><fa-icon [icon]="stat.icon"></fa-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-value">{{ stat.value }}</span>
+      </div>
+      <span class="stat-change" [class.up]="stat.trend === 'up'" [class.down]="stat.trend === 'down'">
+        <fa-icon [icon]="stat.trend === 'up' ? faArrowUp : faArrowDown" size="xs"></fa-icon> {{ stat.change }}
+      </span>
+    </div>
+  </div>
+
+  <!-- two-column layout -->
+  <div class="overview-grid">
+    <!-- quick actions -->
+    <section class="card">
+      <h2 class="card-heading">Quick Actions</h2>
+      <div class="action-grid">
+        <a
+          *ngFor="let action of quickActions"
+          class="action-tile"
+          [routerLink]="action.route"
+          [attr.data-color]="action.color"
+        >
+          <fa-icon class="action-icon" [icon]="action.icon"></fa-icon>
+          <span class="action-label">{{ action.label }}</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- recent activity -->
+    <section class="card">
+      <h2 class="card-heading">Recent Activity</h2>
+      <ul class="activity-list">
+        <li class="activity-item" *ngFor="let item of recentActivities">
+          <fa-icon class="activity-icon" [icon]="item.icon"></fa-icon>
+          <div class="activity-body">
+            <span class="activity-action">{{ item.action }}</span>
+            <span class="activity-detail">{{ item.detail }}</span>
+          </div>
+          <span class="activity-time">{{ item.time }}</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>

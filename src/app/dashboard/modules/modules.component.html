@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Modules</h1>
+      <p class="page-subtitle">Manage modules across all courses.</p>
+    </div>
+    <button class="btn-primary">+ Add Module</button>
+  </div>
+
+  <div class="table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Module Name</th>
+          <th>Code</th>
+          <th>Course</th>
+          <th>Credits</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of modules">
+          <td class="cell-primary">{{ m.name }}</td>
+          <td>{{ m.code }}</td>
+          <td>{{ m.course }}</td>
+          <td>{{ m.credits }}</td>
+          <td>
+            <span class="status-badge" [class.active]="m.status === 'active'" [class.inactive]="m.status === 'inactive'">
+              {{ m.status }}
+            </span>
+          </td>
+          <td>
+            <button class="action-btn">View</button>
+            <button class="action-btn">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

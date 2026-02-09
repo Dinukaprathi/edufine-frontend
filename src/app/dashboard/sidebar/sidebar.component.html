@@ -1,0 +1,27 @@
+<aside class="sidebar" [class.collapsed]="collapsed">
+  <!-- brand -->
+  <div class="sidebar-brand">
+    <img src="edifine-logo.webp" alt="EduFine" class="sidebar-logo" />
+  </div>
+
+  <!-- nav -->
+  <nav class="sidebar-nav">
+    <a
+      *ngFor="let item of navItems"
+      class="nav-item"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
+      [title]="item.label"
+    >
+      <fa-icon class="nav-icon" [icon]="item.icon"></fa-icon>
+      <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <!-- collapse toggle -->
+  <button class="sidebar-toggle" (click)="onToggle()">
+    <fa-icon class="toggle-icon" [icon]="faChevronLeft" [class.rotated]="collapsed"></fa-icon>
+    <span class="nav-label" *ngIf="!collapsed">Collapse</span>
+  </button>
+</aside>

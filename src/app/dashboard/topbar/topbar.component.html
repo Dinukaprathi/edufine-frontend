@@ -1,0 +1,68 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-btn" (click)="onMenuToggle()"><fa-icon [icon]="faBars"></fa-icon></button>
+    <div class="welcome">
+      <span class="welcome-text">Welcome back,</span>
+      <span class="welcome-name">{{ userName }}</span>
+      <span class="welcome-role">{{ userRole }}</span>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="search-box">
+      <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+      <input type="text" class="search-input" placeholder="Search..." />
+    </div>
+
+    <div class="notification-wrapper">
+      <button class="topbar-icon-btn" title="Notifications" (click)="toggleNotifications()">
+        <fa-icon [icon]="faBell"></fa-icon>
+        <span class="notification-badge" *ngIf="unreadCount() > 0">{{ unreadCount() }}</span>
+      </button>
+
+      <!-- Notification dropdown -->
+      <div class="notification-dropdown" *ngIf="showNotifications">
+        <div class="dropdown-header">
+          <h4>Notifications</h4>
+          <button class="mark-all-btn" *ngIf="unreadCount() > 0" (click)="markAllAsRead()">
+            <fa-icon [icon]="faCheckDouble"></fa-icon> Mark all read
+          </button>
+        </div>
+
+        <div class="dropdown-body">
+          <div
+            class="dropdown-item"
+            *ngFor="let notice of notices() | slice:0:5"
+            [class.unread]="!notice.read"
+            (click)="markAsRead(noticeKey(notice.id))"
+          >
+            <div class="dropdown-item-icon icon-info">
+              <fa-icon [icon]="faCircleInfo"></fa-icon>
+            </div>
+            <div class="dropdown-item-content">
+              <p class="dropdown-item-title">{{ notice.title }}</p>
+              <p class="dropdown-item-message">{{ notice.content }}</p>
+              <span class="dropdown-item-time">{{ notice.createdAt | date:'medium' }}</span>
+            </div>
+          </div>
+
+          <div class="dropdown-empty" *ngIf="notices().length === 0">
+            No notifications
+          </div>
+        </div>
+
+        <a class="dropdown-footer" routerLink="/dashboard/notices" (click)="showNotifications = false">
+          View all notices <fa-icon [icon]="faArrowRight"></fa-icon>
+        </a>
+      </div>
+    </div>
+
+    <div class="user-menu">
+      <div class="user-avatar">{{ userName.charAt(0) }}</div>
+      <div class="user-info">
+        <span class="user-name">{{ userName }}</span>
+        <span class="user-role">{{ userRole }}</span>
+      </div>
+    </div>
+  </div>
+</header>

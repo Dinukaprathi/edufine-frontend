@@ -1,0 +1,13 @@
+<div class="dashboard-shell" [class.sidebar-collapsed]="sidebarCollapsed">
+  <app-sidebar
+    [collapsed]="sidebarCollapsed"
+    (toggle)="toggleSidebar()">
+  </app-sidebar>
+
+  <div class="dashboard-main">
+    <app-topbar (menuToggle)="toggleSidebar()"></app-topbar>
+    <main class="dashboard-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

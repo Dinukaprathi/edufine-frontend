@@ -1,0 +1,73 @@
+<section class="login-shell">
+  <!-- left branding panel -->
+  <div class="login-left">
+    <div class="login-brand">
+      <img src="edifine-logo.webp" alt="EduFine" class="login-logo" />
+    </div>
+
+    <h1 class="login-heading">
+      Manage your <span>courses</span>, modules &amp; students in one place.
+    </h1>
+    <p class="login-desc">
+      Role-driven access for administrators, lecturers, and staff.
+      Secured with JWT authentication and real-time status visibility.
+    </p>
+  </div>
+
+  <!-- right form panel -->
+  <div class="login-right">
+    <div class="login-card">
+      <div class="card-top">
+        <img src="edifine-logo.webp" alt="EduFine" class="card-logo" />
+        <p class="card-welcome">Welcome back</p>
+        <h2 class="card-title">Sign in to EduFine</h2>
+        <p class="card-subtitle">Enter your credentials to access the dashboard</p>
+      </div>
+
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <div class="input-wrapper">
+            <input
+              id="username"
+              class="form-input"
+              type="text"
+              formControlName="username"
+              placeholder="e.g. john.doe"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <input
+              id="password"
+              class="form-input"
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-remember">
+            <input type="checkbox" /> Remember me
+          </label>
+          <span class="form-link">Forgot password?</span>
+        </div>
+
+        <button class="btn-login" type="submit">Sign in</button>
+
+        <p class="form-error" *ngIf="formError">{{ formError }}</p>
+      </form>
+
+      <div class="divider">or</div>
+
+      <p class="card-footer">
+        Don't have an account? <a href="#">Register as student</a>
+      </p>
+    </div>
+  </div>
+</section>

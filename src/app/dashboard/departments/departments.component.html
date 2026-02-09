@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Departments</h1>
+      <p class="page-subtitle">Manage departments, assign heads, and track activity.</p>
+    </div>
+    <button class="btn-primary">+ Add Department</button>
+  </div>
+
+  <div class="table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Head</th>
+          <th>Staff</th>
+          <th>Students</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dept of departments">
+          <td class="cell-primary">{{ dept.name }}</td>
+          <td>{{ dept.head }}</td>
+          <td>{{ dept.staff }}</td>
+          <td>{{ dept.students }}</td>
+          <td>
+            <span class="status-badge" [class.active]="dept.status === 'active'" [class.inactive]="dept.status === 'inactive'">
+              {{ dept.status }}
+            </span>
+          </td>
+          <td>
+            <button class="action-btn">View</button>
+            <button class="action-btn">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
